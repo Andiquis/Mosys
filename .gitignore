@@ -20,3 +20,6 @@ Thumbs.db
 
 # Backups
 *.bak
+
+# Local files (not for GitHub)
+_local/
