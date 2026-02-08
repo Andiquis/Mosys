@@ -1,0 +1,1028 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Mosys</title>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="apple-touch-icon" href="assets/icon-192.png" />
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- SQL.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+  </head>
+  <body>
+    <!-- Loading Screen -->
+    <div id="loading" class="loading-screen">
+      <div class="loading-content">
+        <div class="loading-logo">
+          <img
+            src="assets/icon-192.png"
+            alt="Mosys"
+            width="64"
+            height="64"
+            style="border-radius: 16px"
+          />
+        </div>
+        <h2>Mosys</h2>
+        <p class="loading-subtitle">Finance Dashboard</p>
+        <div class="loading-bar">
+          <div class="loading-bar-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app" class="app-container" style="display: none">
+      <!-- Menu Overlay -->
+      <div id="menuOverlay" class="menu-overlay"></div>
+
+      <!-- Sidebar Navigation -->
+      <nav class="app-nav" id="appNav">
+        <!-- Brand -->
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <img
+              src="assets/icon-96.png"
+              alt="Mosys"
+              width="32"
+              height="32"
+              style="border-radius: 8px"
+            />
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">Mosys</span>
+            <span class="brand-label">Finance</span>
+          </div>
+        </div>
+
+        <!-- User Profile -->
+        <div class="sidebar-profile">
+          <div class="profile-avatar">
+            <img
+              id="sidebarAvatar"
+              src="https://ui-avatars.com/api/?name=Anderson+Q&background=6366f1&color=fff&bold=true"
+              alt="Profile"
+            />
+            <div class="status-indicator"></div>
+          </div>
+          <div class="profile-info">
+            <h4 id="sidebarName">USER</h4>
+            <span class="profile-role">Personal Account</span>
+          </div>
+        </div>
+
+        <!-- Nav Section: Menu -->
+        <div class="nav-section">
+          <span class="nav-section-label">MENÚ</span>
+          <ul class="nav-list">
+            <li
+              class="nav-item active"
+              data-section="dashboard"
+              onclick="app.navigateToSection('dashboard')"
+            >
+              <div class="nav-icon"><i class="fas fa-chart-simple"></i></div>
+              <span>Dashboard</span>
+            </li>
+            <li
+              class="nav-item"
+              data-section="movimientos"
+              onclick="app.navigateToSection('movimientos')"
+            >
+              <div class="nav-icon"><i class="fas fa-arrow-right-arrow-left"></i></div>
+              <span>Movimientos</span>
+            </li>
+            <li class="nav-item" data-section="deudas" onclick="app.navigateToSection('deudas')">
+              <div class="nav-icon"><i class="fas fa-handshake-simple"></i></div>
+              <span>Deudas</span>
+            </li>
+            <li
+              class="nav-item"
+              data-section="reportes"
+              onclick="app.navigateToSection('reportes')"
+            >
+              <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+              <span>Reportes</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Nav Section: Settings -->
+        <div class="nav-section">
+          <span class="nav-section-label">CUENTA</span>
+          <ul class="nav-list">
+            <li class="nav-item" data-section="perfil" onclick="app.navigateToSection('perfil')">
+              <div class="nav-icon"><i class="fas fa-user"></i></div>
+              <span>Mi Perfil</span>
+            </li>
+            <li
+              class="nav-item"
+              data-section="configuracion"
+              onclick="app.navigateToSection('configuracion')"
+            >
+              <div class="nav-icon"><i class="fas fa-gear"></i></div>
+              <span>Configuración</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+          <div class="version-badge">v1.0.0</div>
+        </div>
+      </nav>
+
+      <!-- Main Content Area -->
+      <div class="main-wrapper">
+        <!-- Top Header -->
+        <header class="app-header">
+          <div class="header-left">
+            <button class="btn-menu" id="menuBtn">
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title">
+              <h1 id="pageTitle">Dashboard</h1>
+              <p id="pageSubtitle" class="page-date"></p>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="header-btn" id="syncBtn" title="Sincronizar datos">
+              <i class="fas fa-arrows-rotate"></i>
+            </button>
+            <div class="header-avatar">
+              <img
+                src="https://ui-avatars.com/api/?name=A&background=6366f1&color=fff&size=36&bold=true"
+                alt="User"
+              />
+            </div>
+          </div>
+        </header>
+
+        <!-- Scrollable Main -->
+        <main class="app-main">
+          <!-- ====== DASHBOARD ====== -->
+          <section id="dashboard" class="content-section active">
+            <!-- Balance Cards -->
+            <div class="balance-cards">
+              <div class="balance-card income">
+                <div class="card-header-row">
+                  <div class="card-icon">
+                    <i class="fas fa-arrow-trend-up"></i>
+                  </div>
+                  <span class="card-badge">Este mes</span>
+                </div>
+                <div class="card-content">
+                  <p class="card-label">Ingresos</p>
+                  <p class="amount" id="totalIngresos">S/ 0.00</p>
+                </div>
+                <div class="card-trend positive">
+                  <i class="fas fa-arrow-up"></i>
+                  <span>vs mes anterior</span>
+                </div>
+              </div>
+
+              <div class="balance-card expense">
+                <div class="card-header-row">
+                  <div class="card-icon">
+                    <i class="fas fa-arrow-trend-down"></i>
+                  </div>
+                  <span class="card-badge">Este mes</span>
+                </div>
+                <div class="card-content">
+                  <p class="card-label">Gastos</p>
+                  <p class="amount" id="totalGastos">S/ 0.00</p>
+                </div>
+                <div class="card-trend negative">
+                  <i class="fas fa-arrow-down"></i>
+                  <span>vs mes anterior</span>
+                </div>
+              </div>
+
+              <div class="balance-card balance">
+                <div class="card-header-row">
+                  <div class="card-icon">
+                    <i class="fas fa-scale-balanced"></i>
+                  </div>
+                  <span class="card-badge">Balance</span>
+                </div>
+                <div class="card-content">
+                  <p class="card-label">Balance General</p>
+                  <p class="amount" id="balanceGeneral">S/ 0.00</p>
+                </div>
+                <div class="card-trend neutral">
+                  <i class="fas fa-equals"></i>
+                  <span>Diferencia neta</span>
+                </div>
+              </div>
+
+              <div class="balance-card debt">
+                <div class="card-header-row">
+                  <div class="card-icon">
+                    <i class="fas fa-wallet"></i>
+                  </div>
+                  <span class="card-badge">Real</span>
+                </div>
+                <div class="card-content">
+                  <p class="card-label">Balance Real</p>
+                  <p class="amount" id="balanceReal">S/ 0.00</p>
+                </div>
+                <div class="card-trend neutral">
+                  <i class="fas fa-minus"></i>
+                  <span>Con deudas</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+              <div class="section-title-row">
+                <h2>Acciones Rápidas</h2>
+              </div>
+              <div class="action-buttons">
+                <button class="action-btn income-btn" data-action="nuevo-ingreso">
+                  <div class="action-icon"><i class="fas fa-plus"></i></div>
+                  <div class="action-text">
+                    <span class="action-label">Nuevo Ingreso</span>
+                    <span class="action-desc">Registrar entrada</span>
+                  </div>
+                </button>
+                <button class="action-btn expense-btn" data-action="nuevo-gasto">
+                  <div class="action-icon"><i class="fas fa-minus"></i></div>
+                  <div class="action-text">
+                    <span class="action-label">Nuevo Gasto</span>
+                    <span class="action-desc">Registrar salida</span>
+                  </div>
+                </button>
+                <button class="action-btn debt-btn" data-action="nueva-deuda">
+                  <div class="action-icon"><i class="fas fa-handshake-simple"></i></div>
+                  <div class="action-text">
+                    <span class="action-label">Nueva Deuda</span>
+                    <span class="action-desc">Registrar compromiso</span>
+                  </div>
+                </button>
+                <button class="action-btn report-btn" data-action="ver-reportes">
+                  <div class="action-icon"><i class="fas fa-chart-pie"></i></div>
+                  <div class="action-text">
+                    <span class="action-label">Ver Reportes</span>
+                    <span class="action-desc">Análisis completo</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="chart-container full-width">
+              <div class="chart-header">
+                <div>
+                  <h3>Evolución de Saldo</h3>
+                  <p class="chart-subtitle">Historial de tu dinero en el tiempo</p>
+                </div>
+                <div class="chart-controls">
+                  <button class="chart-period-btn" data-period="1d">1D</button>
+                  <button class="chart-period-btn active" data-period="1m">1M</button>
+                  <button class="chart-period-btn" data-period="1y">1A</button>
+                  <button class="chart-period-btn" data-period="all">Todo</button>
+                </div>
+              </div>
+              <div class="balance-chart-wrapper">
+                <canvas id="balanceTradingChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="recent-transactions">
+              <div class="section-title-row">
+                <h2>Movimientos Recientes</h2>
+                <a class="view-all-link" onclick="app.navigateToSection('movimientos')"
+                  >Ver todos <i class="fas fa-arrow-right"></i
+                ></a>
+              </div>
+              <div class="transactions-list" id="recentTransactions">
+                <!-- Se llenará dinámicamente -->
+              </div>
+            </div>
+          </section>
+
+          <!-- ====== MOVIMIENTOS ====== -->
+          <section id="movimientos" class="content-section">
+            <div class="section-header">
+              <h1><i class="fas fa-arrow-right-arrow-left"></i> Gestión de Movimientos</h1>
+              <p class="section-subtitle">Administra tus ingresos y gastos</p>
+            </div>
+
+            <div class="tab-navigation">
+              <button class="tab-btn active" data-tab="lista-movimientos">
+                <i class="fas fa-list"></i> Lista
+              </button>
+              <button class="tab-btn" data-tab="nuevo-movimiento">
+                <i class="fas fa-plus"></i> Nuevo
+              </button>
+            </div>
+
+            <div id="lista-movimientos" class="tab-content active">
+              <div class="filters">
+                <div class="filter-group">
+                  <label for="filtroTipo">Tipo</label>
+                  <select id="filtroTipo" class="filter-select">
+                    <option value="">Todos</option>
+                    <option value="Ingreso">Ingresos</option>
+                    <option value="Gasto">Gastos</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <label for="filtroCategoria">Categoría</label>
+                  <select id="filtroCategoria" class="filter-select">
+                    <option value="">Todas</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <label for="filtroFecha">Período</label>
+                  <select id="filtroFecha" class="filter-select">
+                    <option value="">Todo el tiempo</option>
+                    <option value="hoy">Hoy</option>
+                    <option value="semana">Esta semana</option>
+                    <option value="mes">Este mes</option>
+                    <option value="año">Este año</option>
+                  </select>
+                </div>
+                <div class="filter-group filter-actions">
+                  <button id="limpiarFiltros" class="btn-ghost">
+                    <i class="fas fa-xmark"></i> Limpiar
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-container">
+                <table class="data-table" id="tablaMovimientos">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Tipo</th>
+                      <th>Categoría</th>
+                      <th>Concepto</th>
+                      <th>Monto</th>
+                      <th>Método</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="nuevo-movimiento" class="tab-content">
+              <form id="formMovimiento" class="form-card">
+                <div class="form-card-header">
+                  <div class="form-card-icon"><i class="fas fa-plus-circle"></i></div>
+                  <div>
+                    <h3><span id="formMovimientoTitle">Registrar Nuevo Movimiento</span></h3>
+                    <p>Completa los datos del movimiento</p>
+                  </div>
+                </div>
+                <input type="hidden" id="movimientoId" />
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="tipoMovimiento">Tipo de Movimiento *</label>
+                    <select id="tipoMovimiento" required>
+                      <option value="">Seleccionar tipo</option>
+                      <option value="Ingreso">💰 Ingreso</option>
+                      <option value="Gasto">💸 Gasto</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="montoMovimiento">Monto *</label>
+                    <input
+                      type="number"
+                      id="montoMovimiento"
+                      step="0.01"
+                      min="0"
+                      required
+                      placeholder="0.00"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="categoriaMovimiento">Categoría *</label>
+                    <select id="categoriaMovimiento" required>
+                      <option value="">Seleccionar categoría</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="metodoMovimiento">Método de Pago *</label>
+                    <select id="metodoMovimiento" required>
+                      <option value="">Seleccionar método</option>
+                      <option value="Efectivo">💵 Efectivo</option>
+                      <option value="Tarjeta Débito">💳 Tarjeta Débito</option>
+                      <option value="Tarjeta Crédito">💎 Tarjeta Crédito</option>
+                      <option value="Transferencia">🏦 Transferencia</option>
+                      <option value="Cheque">📝 Cheque</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="conceptoMovimiento">Concepto *</label>
+                  <input
+                    type="text"
+                    id="conceptoMovimiento"
+                    required
+                    placeholder="Ej: Compra de supermercado"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="descripcionMovimiento"
+                    >Descripción <span class="label-optional">(opcional)</span></label
+                  >
+                  <textarea
+                    id="descripcionMovimiento"
+                    rows="3"
+                    placeholder="Detalles adicionales..."
+                  ></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="fechaMovimiento">Fecha</label>
+                  <input type="datetime-local" id="fechaMovimiento" />
+                </div>
+
+                <div class="form-actions">
+                  <button type="reset" class="btn-secondary">
+                    <i class="fas fa-rotate-left"></i> Limpiar
+                  </button>
+                  <button type="submit" class="btn-primary">
+                    <i class="fas fa-check"></i> Guardar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <!-- ====== DEUDAS ====== -->
+          <section id="deudas" class="content-section">
+            <div class="section-header">
+              <h1><i class="fas fa-handshake-simple"></i> Deudas y Créditos</h1>
+              <p class="section-subtitle">Controla el dinero pendiente</p>
+            </div>
+
+            <div class="tab-navigation">
+              <button class="tab-btn active" data-tab="lista-deudas">
+                <i class="fas fa-list"></i> Lista
+              </button>
+              <button class="tab-btn" data-tab="nueva-deuda">
+                <i class="fas fa-plus"></i> Nueva
+              </button>
+              <button class="tab-btn" data-tab="resumen-deudas">
+                <i class="fas fa-chart-bar"></i> Resumen
+              </button>
+            </div>
+
+            <div id="lista-deudas" class="tab-content active">
+              <div class="filters">
+                <div class="filter-group">
+                  <label for="filtroTipoDeuda">Tipo</label>
+                  <select id="filtroTipoDeuda" class="filter-select">
+                    <option value="">Todos</option>
+                    <option value="Débito">🔴 Débitos (Debo)</option>
+                    <option value="Crédito">🟢 Créditos (Me deben)</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <label for="filtroEstadoDeuda">Estado</label>
+                  <select id="filtroEstadoDeuda" class="filter-select">
+                    <option value="">Todos</option>
+                    <option value="Pendiente">⏳ Pendiente</option>
+                    <option value="Pagado">✅ Pagado</option>
+                    <option value="Vencido">❌ Vencido</option>
+                  </select>
+                </div>
+                <div class="filter-group filter-actions">
+                  <button id="limpiarFiltrosDeudas" class="btn-ghost">
+                    <i class="fas fa-xmark"></i> Limpiar
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-container">
+                <table class="data-table" id="tablaDeudas">
+                  <thead>
+                    <tr>
+                      <th>Tipo</th>
+                      <th>Persona/Entidad</th>
+                      <th>Concepto</th>
+                      <th>Monto</th>
+                      <th>Fecha Inicio</th>
+                      <th>Fecha Límite</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="nueva-deuda" class="tab-content">
+              <form id="formDeuda" class="form-card">
+                <div class="form-card-header">
+                  <div class="form-card-icon debt-icon">
+                    <i class="fas fa-handshake-simple"></i>
+                  </div>
+                  <div>
+                    <h3><span id="formDeudaTitle">Registrar Nueva Deuda</span></h3>
+                    <p>Completa los datos de la deuda o crédito</p>
+                  </div>
+                </div>
+                <input type="hidden" id="deudaId" />
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="tipoDeuda">Tipo *</label>
+                    <select id="tipoDeuda" required>
+                      <option value="">Seleccionar tipo</option>
+                      <option value="Débito">🔴 Débito (Yo debo dinero)</option>
+                      <option value="Crédito">🟢 Crédito (Me deben dinero)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="montoDeuda">Monto *</label>
+                    <input
+                      type="number"
+                      id="montoDeuda"
+                      step="0.01"
+                      min="0"
+                      required
+                      placeholder="0.00"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="personaDeuda">Persona/Entidad *</label>
+                  <input
+                    type="text"
+                    id="personaDeuda"
+                    required
+                    placeholder="Ej: Juan Pérez, Banco XYZ"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="conceptoDeuda">Concepto *</label>
+                  <input
+                    type="text"
+                    id="conceptoDeuda"
+                    required
+                    placeholder="Ej: Préstamo personal"
+                  />
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="fechaInicioDeuda">Fecha de Inicio</label>
+                    <input type="date" id="fechaInicioDeuda" />
+                  </div>
+                  <div class="form-group">
+                    <label for="fechaLimiteDeuda">Fecha Límite</label>
+                    <input type="date" id="fechaLimiteDeuda" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="estadoDeuda">Estado</label>
+                  <select id="estadoDeuda">
+                    <option value="Pendiente">⏳ Pendiente</option>
+                    <option value="Pagado">✅ Pagado</option>
+                    <option value="Vencido">❌ Vencido</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="notasDeuda"
+                    >Notas <span class="label-optional">(opcional)</span></label
+                  >
+                  <textarea
+                    id="notasDeuda"
+                    rows="3"
+                    placeholder="Observaciones adicionales..."
+                  ></textarea>
+                </div>
+
+                <div class="form-actions">
+                  <button type="reset" class="btn-secondary">
+                    <i class="fas fa-rotate-left"></i> Limpiar
+                  </button>
+                  <button type="submit" class="btn-primary">
+                    <i class="fas fa-check"></i> Guardar
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div id="resumen-deudas" class="tab-content">
+              <div class="debt-summary">
+                <div class="summary-cards">
+                  <div class="summary-card debt-card">
+                    <div class="summary-icon red"><i class="fas fa-arrow-trend-down"></i></div>
+                    <div>
+                      <h3>Total Débitos</h3>
+                      <p class="amount" id="totalDebitos">S/ 0.00</p>
+                      <span>Dinero que debo</span>
+                    </div>
+                  </div>
+                  <div class="summary-card credit-card">
+                    <div class="summary-icon green"><i class="fas fa-arrow-trend-up"></i></div>
+                    <div>
+                      <h3>Total Créditos</h3>
+                      <p class="amount" id="totalCreditos">S/ 0.00</p>
+                      <span>Dinero que me deben</span>
+                    </div>
+                  </div>
+                  <div class="summary-card balance-card">
+                    <div class="summary-icon blue"><i class="fas fa-scale-balanced"></i></div>
+                    <div>
+                      <h3>Balance Deudas</h3>
+                      <p class="amount" id="balanceDeudas">S/ 0.00</p>
+                      <span>Créditos - Débitos</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="debt-chart">
+                  <h3>Distribución de Deudas</h3>
+                  <canvas id="debtChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ====== REPORTES ====== -->
+          <section id="reportes" class="content-section">
+            <div class="section-header">
+              <h1><i class="fas fa-chart-line"></i> Reportes</h1>
+              <p class="section-subtitle">Análisis detallado de tu situación financiera</p>
+            </div>
+
+            <div class="tab-navigation">
+              <button class="tab-btn active" data-tab="resumen-general">
+                <i class="fas fa-chart-pie"></i> General
+              </button>
+              <button class="tab-btn" data-tab="analisis-categorias">
+                <i class="fas fa-tags"></i> Categorías
+              </button>
+              <button class="tab-btn" data-tab="tendencias">
+                <i class="fas fa-chart-line"></i> Tendencias
+              </button>
+            </div>
+
+            <div id="resumen-general" class="tab-content active">
+              <div class="reports-grid">
+                <div class="report-card">
+                  <h3>Balance Financiero</h3>
+                  <canvas id="balanceChart"></canvas>
+                </div>
+                <div class="report-card">
+                  <h3>Métricas Clave</h3>
+                  <div class="metrics-list" id="metricsKey"></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="analisis-categorias" class="tab-content">
+              <div class="category-analysis">
+                <div class="category-chart-container">
+                  <canvas id="categoryAnalysisChart"></canvas>
+                </div>
+                <div class="category-details">
+                  <h3>Detalles por Categoría</h3>
+                  <div class="category-table" id="categoryTable"></div>
+                </div>
+              </div>
+            </div>
+
+            <div id="tendencias" class="tab-content">
+              <div class="trends-container">
+                <div class="trend-controls">
+                  <select id="trendPeriod">
+                    <option value="12">Últimos 12 meses</option>
+                    <option value="6">Últimos 6 meses</option>
+                    <option value="3">Últimos 3 meses</option>
+                  </select>
+                </div>
+                <div class="trend-chart-container">
+                  <canvas id="trendsChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ====== PERFIL ====== -->
+          <section id="perfil" class="content-section">
+            <div class="section-header">
+              <h1><i class="fas fa-user"></i> Mi Perfil</h1>
+              <p class="section-subtitle">Gestiona tu información personal</p>
+            </div>
+
+            <div class="profile-edit-container">
+              <div class="profile-card-header">
+                <div class="profile-avatar-large">
+                  <img id="editAvatarPreview" src="" alt="Avatar" />
+                  <button
+                    class="btn-change-avatar"
+                    onclick="document.getElementById('profileAvatarFile').click()"
+                  >
+                    <i class="fas fa-camera"></i>
+                  </button>
+                  <input
+                    type="file"
+                    id="profileAvatarFile"
+                    accept="image/*"
+                    style="display: none"
+                  />
+                </div>
+              </div>
+
+              <form id="profileForm" class="profile-form form-card">
+                <div class="form-group">
+                  <label>Nombre Completo</label>
+                  <input type="text" id="profileName" required />
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" id="profileEmail" />
+                </div>
+                <div class="form-group" style="display: none">
+                  <label>URL del Avatar</label>
+                  <input type="url" id="profileAvatarInput" />
+                </div>
+                <div class="form-group">
+                  <label>Biografía / Notas</label>
+                  <textarea id="profileBio" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn-primary">
+                    <i class="fas fa-check"></i> Guardar Cambios
+                  </button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <!-- ====== CONFIGURACIÓN ====== -->
+          <section id="configuracion" class="content-section">
+            <div class="section-header">
+              <h1><i class="fas fa-gear"></i> Configuración</h1>
+              <p class="section-subtitle">Personaliza tu experiencia</p>
+            </div>
+
+            <div class="config-grid">
+              <div class="config-card">
+                <div class="config-card-header">
+                  <div class="config-icon"><i class="fas fa-database"></i></div>
+                  <h3>Gestión de Datos</h3>
+                </div>
+                <div class="config-options">
+                  <button class="config-btn" id="exportData">
+                    <i class="fas fa-download"></i> Exportar Datos
+                  </button>
+                  <button class="config-btn" id="importData">
+                    <i class="fas fa-upload"></i> Importar Datos
+                  </button>
+                  <button class="config-btn" id="generateDemoData">
+                    <i class="fas fa-wand-magic-sparkles"></i> Generar Datos Demo
+                  </button>
+                  <button class="config-btn danger" id="clearData">
+                    <i class="fas fa-trash-can"></i> Limpiar Base de Datos
+                  </button>
+                </div>
+              </div>
+
+              <div class="config-card">
+                <div class="config-card-header">
+                  <div class="config-icon"><i class="fas fa-palette"></i></div>
+                  <h3>Apariencia</h3>
+                </div>
+                <div class="config-options">
+                  <!-- Mode Toggle -->
+                  <div class="appearance-group">
+                    <span class="appearance-label">Modo</span>
+                    <div class="mode-toggle" id="modeToggle">
+                      <button class="mode-btn active" data-mode="light" title="Claro">
+                        <i class="fas fa-sun"></i>
+                        <span>Claro</span>
+                      </button>
+                      <button class="mode-btn" data-mode="dark" title="Oscuro">
+                        <i class="fas fa-moon"></i>
+                        <span>Oscuro</span>
+                      </button>
+                      <button class="mode-btn" data-mode="auto" title="Automático">
+                        <i class="fas fa-circle-half-stroke"></i>
+                        <span>Auto</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Color Scheme -->
+                  <div class="appearance-group">
+                    <span class="appearance-label">Esquema de color</span>
+                    <div class="color-scheme-grid" id="colorSchemeGrid">
+                      <button class="color-scheme-card active" data-scheme="ocean" title="Océano">
+                        <span class="scheme-swatch ocean"></span>
+                        <span class="scheme-name">Océano</span>
+                      </button>
+                      <button class="color-scheme-card" data-scheme="emerald" title="Esmeralda">
+                        <span class="scheme-swatch emerald"></span>
+                        <span class="scheme-name">Esmeralda</span>
+                      </button>
+                      <button class="color-scheme-card" data-scheme="slate" title="Grafito">
+                        <span class="scheme-swatch slate"></span>
+                        <span class="scheme-name">Grafito</span>
+                      </button>
+                      <button class="color-scheme-card" data-scheme="sunset" title="Atardecer">
+                        <span class="scheme-swatch sunset"></span>
+                        <span class="scheme-name">Atardecer</span>
+                      </button>
+                      <button class="color-scheme-card" data-scheme="violet" title="Violeta">
+                        <span class="scheme-swatch violet"></span>
+                        <span class="scheme-name">Violeta</span>
+                      </button>
+                      <button class="color-scheme-card" data-scheme="rose" title="Rosa">
+                        <span class="scheme-swatch rose"></span>
+                        <span class="scheme-name">Rosa</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Acerca de la App -->
+              <div class="config-card about-card">
+                <div class="about-hero">
+                  <div class="about-logo">
+                    <img
+                      src="assets/icon-192.png"
+                      alt="Mosys"
+                      width="56"
+                      height="56"
+                      style="border-radius: 16px"
+                    />
+                  </div>
+                  <h3 class="about-app-name">Mosys</h3>
+                  <span class="about-tagline">Sistema de Dinero Personal</span>
+                  <span class="about-version-badge">v1.0.0</span>
+                </div>
+
+                <div class="app-info">
+                  <div class="info-row">
+                    <span><i class="fas fa-code-branch"></i> Versión</span>
+                    <span class="info-value">1.0.0</span>
+                  </div>
+                  <div class="info-row">
+                    <span><i class="fas fa-calendar-check"></i> Fecha de desarrollo</span>
+                    <span class="info-value">Febrero 2026</span>
+                  </div>
+                  <div class="info-row">
+                    <span><i class="fas fa-layer-group"></i> Plataforma</span>
+                    <span class="info-value">PWA + Android</span>
+                  </div>
+                  <div class="info-row">
+                    <span><i class="fas fa-database"></i> Base de datos</span>
+                    <span id="dbStatus" class="status-online">Conectada</span>
+                  </div>
+                </div>
+
+                <div class="about-divider"></div>
+
+                <div class="about-section-title">
+                  <i class="fas fa-user-code"></i> Desarrollador
+                </div>
+                <div class="app-info">
+                  <div class="info-row">
+                    <span><i class="fab fa-github"></i> GitHub</span>
+                    <a
+                      href="https://github.com/Andiquis"
+                      target="_blank"
+                      rel="noopener"
+                      class="info-link"
+                    >
+                      <i class="fas fa-arrow-up-right-from-square"></i> @Andiquis
+                    </a>
+                  </div>
+                  <div class="info-row">
+                    <span><i class="fas fa-phone"></i> Soporte</span>
+                    <a href="tel:+51942287756" class="info-link">942 287 756</a>
+                  </div>
+                </div>
+
+                <div class="about-divider"></div>
+
+                <div class="about-section-title"><i class="fas fa-scale-balanced"></i> Legal</div>
+                <div class="about-legal">
+                  Mosys es una app de uso personal para gestionar ingresos, gastos y deudas. Tus
+                  datos se almacenan localmente en tu dispositivo.
+                </div>
+                <div class="about-copyright">
+                  © 2026 Andiquis · Hecho con
+                  <i class="fas fa-heart" style="color: var(--danger); font-size: 0.7rem"></i> en
+                  Perú
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="confirmModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="confirmTitle">Confirmar Acción</h3>
+          <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+          <p id="confirmMessage">¿Estás seguro de realizar esta acción?</p>
+        </div>
+        <div class="modal-footer">
+          <button id="confirmNo" class="btn-secondary">Cancelar</button>
+          <button id="confirmYes" class="btn-primary">Confirmar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="editModal" class="modal">
+      <div class="modal-content large">
+        <div class="modal-header">
+          <h3 id="editTitle">Editar Registro</h3>
+          <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div id="editFormContainer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Page Date Script -->
+    <script>
+      document.getElementById('pageSubtitle').textContent = new Date().toLocaleDateString('es-PE', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    </script>
+
+    <!-- Scripts -->
+    <script src="js/db.js"></script>
+    <script src="js/movimientos.js"></script>
+    <script src="js/deudas.js"></script>
+    <script src="js/reportes.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('sw.js')
+            .then(function (registration) {
+              console.log('SW registered: ', registration)
+            })
+            .catch(function (registrationError) {
+              console.log('SW registration failed: ', registrationError)
+            })
+        })
+      }
+    </script>
+  </body>
+</html>

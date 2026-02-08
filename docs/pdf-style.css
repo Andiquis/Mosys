@@ -1,0 +1,207 @@
+/* PDF Export Styles — Mosys Documentation */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --bg: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --code-bg: #f1f5f9;
+  --success: #059669;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-size: 11pt;
+  line-height: 1.7;
+  color: var(--text);
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 15mm 20mm;
+  background: var(--bg);
+}
+
+/* Headings */
+h1 {
+  font-size: 22pt;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  letter-spacing: -0.02em;
+  border-bottom: 3px solid var(--primary);
+  padding-bottom: 0.3em;
+}
+h2 {
+  font-size: 16pt;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 1.8em;
+  margin-bottom: 0.4em;
+}
+h3 {
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 1.5em;
+  margin-bottom: 0.3em;
+}
+h4 {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 1.2em;
+}
+
+/* First h1 no top margin */
+body > h1:first-of-type {
+  margin-top: 0;
+}
+
+/* Horizontal rules */
+hr {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 2em 0;
+}
+
+/* Paragraphs */
+p {
+  margin: 0.5em 0;
+}
+
+/* Links */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Bold */
+strong {
+  font-weight: 700;
+}
+
+/* Images — center logo */
+p img[alt='Mosys Logo'] {
+  display: block;
+  margin: 0 auto 0.5em;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+}
+
+/* Badges */
+p img[alt='Versión'],
+p img[alt='Plataforma'],
+p img[alt='Capacitor'],
+p img[alt='SQLite'],
+p img[alt='Licencia'] {
+  height: 22px;
+  margin: 0 3px;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 10pt;
+}
+th {
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 9.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+/* Code blocks */
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  overflow-x: auto;
+  font-size: 9pt;
+  line-height: 1.6;
+  margin: 1em 0;
+}
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 9.5pt;
+}
+p code,
+li code,
+td code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 9pt;
+}
+
+/* Lists */
+ul,
+ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+li {
+  margin: 0.2em 0;
+}
+
+/* Blockquote */
+blockquote {
+  border-left: 4px solid var(--primary);
+  background: #eff6ff;
+  margin: 1em 0;
+  padding: 12px 18px;
+  border-radius: 0 8px 8px 0;
+  font-size: 10pt;
+  color: var(--text);
+}
+blockquote p {
+  margin: 0.3em 0;
+}
+
+/* Sub text */
+sub {
+  font-size: 8.5pt;
+  color: var(--text-muted);
+}
+
+/* Page breaks for print */
+@media print {
+  body {
+    padding: 0;
+  }
+  h1,
+  h2 {
+    page-break-after: avoid;
+  }
+  table,
+  pre,
+  blockquote {
+    page-break-inside: avoid;
+  }
+}
