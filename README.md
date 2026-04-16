@@ -539,13 +539,13 @@ Accesible desde: **Configuración → Apariencia**
 A continuación, se muestran algunas capturas de pantalla representativas de la aplicación:
 
 <p align="center" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-  <img src="assets/capturas/1.jpeg" alt="Captura 1" width="150" style="border-radius:15px;">
-  <img src="assets/capturas/2.jpeg" alt="Captura 2" width="150" style="border-radius:15px;">
-  <img src="assets/capturas/3.jpeg" alt="Captura 3" width="150" style="border-radius:15px;">
-  <img src="assets/capturas/4.jpeg" alt="Captura 4" width="150" style="border-radius:15px;">
-  <img src="assets/capturas/5.jpeg" alt="Captura 5" width="150" style="border-radius:15px;">
-  <img src="assets/capturas/6.jpeg" alt="Captura 6" width="150" style="border-radius:15px;">
-  <img src="assets/capturas/7.jpeg" alt="Captura 7" width="150" style="border-radius:15px;">
+  <img src="assets/capturas/1.jpeg" alt="Captura 1" width="160" style="border-radius:15px;">
+  <img src="assets/capturas/2.jpeg" alt="Captura 2" width="160" style="border-radius:15px;">
+  <!--img src="assets/capturas/3.jpeg" alt="Captura 3" width="150" style="border-radius:15px;"-->
+  <img src="assets/capturas/4.jpeg" alt="Captura 4" width="160" style="border-radius:15px;">
+  <img src="assets/capturas/5.jpeg" alt="Captura 5" width="160" style="border-radius:15px;">
+  <img src="assets/capturas/6.jpeg" alt="Captura 6" width="160" style="border-radius:15px;">
+  <img src="assets/capturas/7.jpeg" alt="Captura 7" width="160" style="border-radius:15px;
 </p>
 
 ---
