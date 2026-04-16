@@ -2,7 +2,7 @@
 # Script para subir cambios a GitHub (Mosys) de forma robusta
 
 REPO_URL="https://github.com/Andiquis/Mosys.git"
-BRANCH="main"
+DEFAULT_BRANCH="main"
 
 echo "🚀 Iniciando proceso de subida..."
 
@@ -20,8 +20,9 @@ if [ ! -d ".git" ]; then
   git remote add origin "$REPO_URL"
 
   echo "⬇️ Sincronizando primero con GitHub..."
-  git fetch origin "$BRANCH"
-  git reset --hard "origin/$BRANCH"
+  git fetch origin "$DEFAULT_BRANCH"
+  git checkout -b "$DEFAULT_BRANCH"
+  git reset --hard "origin/$DEFAULT_BRANCH"
 
   echo "✅ Repo inicializado y alineado con remoto."
 fi
@@ -32,22 +33,40 @@ if ! git remote get-url origin >/dev/null 2>&1; then
   git remote add origin "$REPO_URL"
 fi
 
-# 📡 3. Asegurar sincronización antes de subir
+# 🧠 3. Detectar rama actual
+CURRENT_BRANCH=$(git branch --show-current)
+
+if [ -z "$CURRENT_BRANCH" ]; then
+  echo "⚠️ No hay rama activa. Creando $DEFAULT_BRANCH..."
+  git checkout -b "$DEFAULT_BRANCH"
+  CURRENT_BRANCH="$DEFAULT_BRANCH"
+fi
+
+echo "🌿 Rama actual: $CURRENT_BRANCH"
+
+# 🔥 Si estás en master pero remoto usa main → corregir
+if [ "$CURRENT_BRANCH" = "master" ]; then
+  echo "🔄 Renombrando rama master → main..."
+  git branch -M main
+  CURRENT_BRANCH="main"
+fi
+
+# 📡 4. Sincronizar antes de subir
 echo "📡 Sincronizando antes de subir..."
-git fetch origin "$BRANCH"
+git fetch origin "$CURRENT_BRANCH"
 
 LOCAL=$(git rev-parse @ 2>/dev/null || echo "")
-REMOTE=$(git rev-parse "origin/$BRANCH" 2>/dev/null || echo "")
+REMOTE=$(git rev-parse "origin/$CURRENT_BRANCH" 2>/dev/null || echo "")
 
 if [ "$LOCAL" != "$REMOTE" ]; then
   echo "⬇️ Hay cambios en GitHub. Integrando primero..."
 
-  if ! git pull origin "$BRANCH"; then
+  if ! git pull origin "$CURRENT_BRANCH"; then
     echo "⚠️ Conflictos detectados antes de subir."
-    read -p "¿Deseas sobrescribir con remoto antes de subir? (s/n): " force
+    read -p "¿Deseas sobrescribir con remoto? (s/n): " force
 
     if [[ "$force" == "s" || "$force" == "S" ]]; then
-      git reset --hard "origin/$BRANCH"
+      git reset --hard "origin/$CURRENT_BRANCH"
     else
       echo "❌ Cancelado. Resuelve conflictos manualmente."
       exit 1
@@ -55,16 +74,16 @@ if [ "$LOCAL" != "$REMOTE" ]; then
   fi
 fi
 
-# 🔍 4. Verificar cambios locales
+# 🔍 5. Verificar cambios locales
 if [[ -z $(git status -s) ]]; then
   echo "✅ No hay cambios pendientes por subir."
   exit 0
 fi
 
-# ➕ 5. Añadir cambios
+# ➕ 6. Añadir cambios
 git add .
 
-# 📝 6. Commit
+# 📝 7. Commit
 read -p "Introduce mensaje del commit (Enter = automático): " commit_msg
 if [[ -z "$commit_msg" ]]; then
   commit_msg="Auto-update: $(date +'%Y-%m-%d %H:%M:%S')"
@@ -72,14 +91,14 @@ fi
 
 git commit -m "$commit_msg" || echo "⚠️ Nada que commitear."
 
-# 🚀 7. Push con reintentos
+# 🚀 8. Push con reintentos
 max_retries=3
 attempt=1
 
 while [ $attempt -le $max_retries ]; do
   echo "🚀 Subiendo a GitHub (Intento $attempt/$max_retries)..."
 
-  if git push origin "$BRANCH"; then
+  if git push -u origin "$CURRENT_BRANCH"; then
     echo "✅ ¡Subida exitosa!"
     break
   else
