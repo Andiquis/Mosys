@@ -341,10 +341,9 @@ La aplicación usa **SQLite** ejecutado en el navegador mediante **sql.js** (Web
 │ nombre  TEXT UNIQUE   │     │ clave TEXT UNIQUE    │
 │ tipo    TEXT          │     │ valor TEXT           │
 │ icono   TEXT          │     └──────────────────────┘
-│ color   TEXT          │
-│ activa  INTEGER       │     ┌──────────────────────┐
-└──────────────────────┘     │    user_profile      │
-                              ├──────────────────────┤
+│ color   TEXT          │     ┌──────────────────────┐
+│ activa  INTEGER       │     │    user_profile      │
+└──────────────────────┘     ├──────────────────────┤
                               │ id     INTEGER PK    │
                               │ nombre TEXT          │
                               │ email  TEXT          │
@@ -532,6 +531,22 @@ Accesible desde: **Configuración → Apariencia**
 | Reportes            | Configuración | Acerca de      |
 | ------------------- | ------------- | -------------- |
 | Análisis financiero | Temas y datos | Info de la app |
+
+---
+
+## 📷 Capturas de Pantalla
+
+A continuación, se muestran algunas capturas de pantalla representativas de la aplicación:
+
+<p align="center" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+  <img src="assets/capturas/1.jpeg" alt="Captura 1" width="150" style="border-radius:15px;">
+  <img src="assets/capturas/2.jpeg" alt="Captura 2" width="150" style="border-radius:15px;">
+  <img src="assets/capturas/3.jpeg" alt="Captura 3" width="150" style="border-radius:15px;">
+  <img src="assets/capturas/4.jpeg" alt="Captura 4" width="150" style="border-radius:15px;">
+  <img src="assets/capturas/5.jpeg" alt="Captura 5" width="150" style="border-radius:15px;">
+  <img src="assets/capturas/6.jpeg" alt="Captura 6" width="150" style="border-radius:15px;">
+  <img src="assets/capturas/7.jpeg" alt="Captura 7" width="150" style="border-radius:15px;">
+</p>
 
 ---
 
