@@ -1,3 +1,10 @@
+<div align="center">
+  <img src="assets/capturas/bg2.jpeg" alt="mosys" width="800" style="border-radius: 10px;">
+  <img src="assets/capturas/bg1.jpeg" alt="mosys" width="800" style="border-radius: 10px;">
+</div>
+
+
+
 <p align="center">
   <img src="icon.png" alt="Mosys Logo" width="120" height="120" style="border-radius:24px">
 </p>
