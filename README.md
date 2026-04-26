@@ -586,5 +586,5 @@ copies of the Software...
 
 <p align="center">
   <sub>Hecho con ❤️ por <strong>Anderson Quispe</strong> · SENATI 2026</sub><br>
-  <sub>Examen de Suficiencia · Desarrollo de Aplicaciones Móviles II</sub>
+  <sub>Examen de Suficiencia · Desarrollo de Aplicaciones Móviles 2</sub>
 </p>
